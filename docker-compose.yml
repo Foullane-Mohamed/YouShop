@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: youshop-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-databases.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # Auth Service
+  auth-service:
+    build: ./auth-service
+    container_name: youshop-auth
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/auth_db
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      PORT: 3001
+    depends_on:
+      - postgres
+
+  # Catalog Service
+  catalog-service:
+    build: ./catalog-service
+    container_name: youshop-catalog
+    restart: always
+    ports:
+      - "3002:3002"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/catalog_db
+      PORT: 3002
+    depends_on:
+      - postgres
+
+  # Order Service
+  order-service:
+    build: ./order-service
+    container_name: youshop-order
+    restart: always
+    ports:
+      - "3003:3003"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/order_db
+      INVENTORY_SERVICE_URL: http://inventory-service:3004
+      PORT: 3003
+    depends_on:
+      - postgres
+      - inventory-service
+
+  # Inventory Service
+  inventory-service:
+    build: ./inventory-service
+    container_name: youshop-inventory
+    restart: always
+    ports:
+      - "3004:3004"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/inventory_db
+      PORT: 3004
+    depends_on:
+      - postgres
+
+  # API Gateway
+  api-gateway:
+    build: ./api-gateway
+    container_name: youshop-gateway
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      AUTH_SERVICE_URL: http://auth-service:3001
+      CATALOG_SERVICE_URL: http://catalog-service:3002
+      ORDER_SERVICE_URL: http://order-service:3003
+      INVENTORY_SERVICE_URL: http://inventory-service:3004
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      PORT: 3000
+    depends_on:
+      - auth-service
+      - catalog-service
+      - order-service
+      - inventory-service
+
+volumes:
+  postgres_data:
