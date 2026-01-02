@@ -1,0 +1,15 @@
+{
+  "name": "youshop-microservices",
+  "version": "1.0.0",
+  "description": "Learning microservices with NestJS",
+  "scripts": {
+    "install:all": "npm install && cd api-gateway && npm install && cd ../auth-service && npm install && cd ../catalog-service && npm install && cd ../order-service && npm install && cd ../inventory-service && npm install",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "prisma:generate": "cd auth-service && npx prisma generate && cd ../catalog-service && npx prisma generate && cd ../order-service && npx prisma generate && cd ../inventory-service && npx prisma generate",
+    "prisma:migrate": "cd auth-service && npx prisma migrate dev && cd ../catalog-service && npx prisma migrate dev && cd ../order-service && npx prisma migrate dev && cd ../inventory-service && npx prisma migrate dev"
+  },
+  "keywords": ["microservices", "nestjs", "learning"],
+  "author": "",
+  "license": "MIT"
+}
