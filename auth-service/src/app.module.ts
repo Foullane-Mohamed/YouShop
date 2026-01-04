@@ -8,7 +8,12 @@ import { PrismaService } from './prisma.service';
   imports: [
     JwtModule.register({
       global: true,
-      secret: process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production',
+      secret: process.env.JWT_SECRET || (() => {
+        if (process.env.NODE_ENV === 'production') {
+          throw new Error('JWT_SECRET environment variable must be set in production');
+        }
+        return 'dev-secret-change-in-production-f8a7b3e2d9c4';
+      })(),
       signOptions: { expiresIn: '24h' },
     }),
   ],
