@@ -48,7 +48,8 @@ export class AuthService {
    * - Verify email exists
    * - Verify password matches
    * - Return JWT token
-   */ async login(dto: LoginDto) {
+   */
+  async login(dto: LoginDto) {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });

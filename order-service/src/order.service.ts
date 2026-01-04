@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { PrismaService } from './prisma.service';
@@ -6,6 +6,7 @@ import { CreateOrderDto } from './order.dto';
 
 @Injectable()
 export class OrderService {
+  private readonly logger = new Logger(OrderService.name);
   private inventoryUrl = process.env.INVENTORY_SERVICE_URL || 'http://localhost:3004';
 
   constructor(
@@ -161,7 +162,7 @@ export class OrderService {
       );
     } catch (error) {
       // Log error but don't fail (stock can be manually adjusted)
-      console.error('Failed to increase stock:', error.message);
+      this.logger.error(`Failed to increase stock: ${error.message}`, error.stack);
     }
   }
 }
