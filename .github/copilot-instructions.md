@@ -224,7 +224,7 @@ docker-compose down -v
 
 - Use meaningful commit messages
 - Keep commits focused and atomic
-- Follow conventional commits format preferred
+- Conventional commits format is preferred
 - Branch naming: `feature/`, `bugfix/`, `hotfix/` prefixes
 
 ## Notes for Copilot
