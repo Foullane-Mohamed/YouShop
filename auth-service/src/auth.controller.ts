@@ -8,6 +8,23 @@ import { RegisterDto, LoginDto, AuthResponseDto } from './auth.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Get()
+  @ApiOperation({ summary: 'Root endpoint - Service info' })
+  getRoot() {
+    return {
+      service: 'Auth Service',
+      status: 'running',
+      version: '1.0.0',
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  @Get('health')
+  @ApiOperation({ summary: 'Health check' })
+  getHealth() {
+    return { status: 'healthy', service: 'auth-service', timestamp: new Date().toISOString() };
+  }
+
   @Post('register')
   @ApiOperation({ summary: 'Register a new user' })
   @ApiResponse({ status: 201, description: 'User registered successfully', type: AuthResponseDto })

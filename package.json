@@ -1,13 +1,19 @@
 {
   "name": "youshop-microservices",
   "version": "1.0.0",
-  "description": "Learning microservices with NestJS",
-  "scripts": {
-    "install:all": "npm install && cd api-gateway && npm install && cd ../auth-service && npm install && cd ../catalog-service && npm install && cd ../order-service && npm install && cd ../inventory-service && npm install",
+  "description": "Learning microservices with NestJS",  "scripts": {
+    "install:all": "npm install && cd api-gateway && npm install && cd .. && cd auth-service && npm install && cd .. && cd catalog-service && npm install && cd .. && cd order-service && npm install && cd .. && cd inventory-service && npm install && cd ..",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "prisma:generate": "cd auth-service && npx prisma generate && cd ../catalog-service && npx prisma generate && cd ../order-service && npx prisma generate && cd ../inventory-service && npx prisma generate",
-    "prisma:migrate": "cd auth-service && npx prisma migrate dev && cd ../catalog-service && npx prisma migrate dev && cd ../order-service && npx prisma migrate dev && cd ../inventory-service && npx prisma migrate dev"
+    "docker:logs": "docker-compose logs -f",
+    "docker:rebuild": "docker-compose down && docker-compose build --no-cache && docker-compose up -d",
+    "prisma:generate": "cd auth-service && npx prisma generate && cd .. && cd catalog-service && npx prisma generate && cd .. && cd order-service && npx prisma generate && cd .. && cd inventory-service && npx prisma generate && cd ..",
+    "prisma:migrate": "cd auth-service && npx prisma migrate dev && cd .. && cd catalog-service && npx prisma migrate dev && cd .. && cd order-service && npx prisma migrate dev && cd .. && cd inventory-service && npx prisma migrate dev && cd ..",
+    "dev:auth": "cd auth-service && npm run start:dev",
+    "dev:catalog": "cd catalog-service && npm run start:dev",
+    "dev:order": "cd order-service && npm run start:dev",
+    "dev:inventory": "cd inventory-service && npm run start:dev",
+    "dev:gateway": "cd api-gateway && npm run start:dev"
   },
   "keywords": ["microservices", "nestjs", "learning"],
   "author": "",

@@ -5,7 +5,7 @@ import { GatewayService } from './gateway.service';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthGatewayController {
-  private authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:3001';
+  private authServiceUrl = process.env.AUTH_SERVICE_URL;
 
   constructor(private gateway: GatewayService) {}
 

@@ -6,10 +6,9 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  // Enable validation globally
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.enableCors();
   
-  // Swagger documentation
   const config = new DocumentBuilder()
     .setTitle('Auth Service API')
     .setDescription('User authentication and JWT token management')

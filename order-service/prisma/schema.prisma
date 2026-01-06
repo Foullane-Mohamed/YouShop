@@ -28,7 +28,7 @@ model Order {
 model OrderItem {
   id        String @id @default(uuid())
   orderId   String
-  productId String // SKU from catalog
+  productId String
   quantity  Int
   price     Float
 

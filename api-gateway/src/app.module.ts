@@ -5,6 +5,7 @@ import { AuthGatewayController } from './auth-gateway.controller';
 import { CatalogGatewayController } from './catalog-gateway.controller';
 import { OrderGatewayController } from './order-gateway.controller';
 import { InventoryGatewayController } from './inventory-gateway.controller';
+import { HealthController } from './health.controller';
 import { GatewayService } from './gateway.service';
 import { AuthGuard } from './auth.guard';
 
@@ -13,10 +14,11 @@ import { AuthGuard } from './auth.guard';
     HttpModule,
     JwtModule.register({
       global: true,
-      secret: process.env.JWT_SECRET || 'your-super-secret-jwt-key',
+      secret: process.env.JWT_SECRET ,
     }),
   ],
   controllers: [
+    HealthController,
     AuthGatewayController,
     CatalogGatewayController,
     OrderGatewayController,

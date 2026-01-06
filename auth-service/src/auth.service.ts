@@ -11,14 +11,13 @@ import { RegisterDto, LoginDto } from "./auth.dto";
 @Injectable()
 export class AuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
-
   async register(dto: RegisterDto) {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
 
     if (existingUser) {
-      throw new ConflictException("Email already registered");
+      throw new ConflictException('Email already registered');
     }
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
@@ -39,28 +38,22 @@ export class AuthService {
         id: user.id,
         email: user.email,
         name: user.name,
-      },
-    };
+      },    };
   }
 
-  /**
-   * Login existing user
-   * - Verify email exists
-   * - Verify password matches
-   * - Return JWT token
-   */ async login(dto: LoginDto) {
+  async login(dto: LoginDto) {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
 
     if (!user) {
-      throw new UnauthorizedException("Invalid credentials");
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException("Invalid credentials");
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     const token = this.generateToken(user.id, user.email);

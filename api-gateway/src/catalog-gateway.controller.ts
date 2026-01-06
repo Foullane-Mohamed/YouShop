@@ -6,7 +6,7 @@ import { AuthGuard } from './auth.guard';
 @ApiTags('Catalog')
 @Controller('catalog')
 export class CatalogGatewayController {
-  private catalogServiceUrl = process.env.CATALOG_SERVICE_URL || 'http://localhost:3002';
+  private catalogServiceUrl = process.env.CATALOG_SERVICE_URL ;
 
   constructor(private gateway: GatewayService) {}
 

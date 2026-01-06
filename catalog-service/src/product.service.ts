@@ -6,34 +6,21 @@ import { CreateProductDto, UpdateProductDto } from './product.dto';
 export class ProductService {
   constructor(private prisma: PrismaService) {}
 
-  /**
-   * Create a new product
-   */
   async create(dto: CreateProductDto) {
-    // Check if SKU already exists
     const existing = await this.prisma.product.findUnique({
       where: { sku: dto.sku },
     });
 
     if (existing) {
       throw new ConflictException('Product with this SKU already exists');
-    }
-
-    return this.prisma.product.create({ data: dto });
+    }    return this.prisma.product.create({ data: dto });
   }
 
-  /**
-   * Get all products (public endpoint)
-   */
   async findAll() {
     return this.prisma.product.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
+      orderBy: { createdAt: 'desc' },    });
   }
 
-  /**
-   * Get product by ID
-   */
   async findOne(id: string) {
     const product = await this.prisma.product.findUnique({
       where: { id },
@@ -41,14 +28,9 @@ export class ProductService {
 
     if (!product) {
       throw new NotFoundException('Product not found');
-    }
-
-    return product;
+    }    return product;
   }
 
-  /**
-   * Get product by SKU (used by other services)
-   */
   async findBySku(sku: string) {
     const product = await this.prisma.product.findUnique({
       where: { sku },
@@ -56,28 +38,19 @@ export class ProductService {
 
     if (!product) {
       throw new NotFoundException('Product not found');
-    }
-
-    return product;
+    }    return product;
   }
 
-  /**
-   * Update product
-   */
   async update(id: string, dto: UpdateProductDto) {
-    await this.findOne(id); // Check exists
+    await this.findOne(id);
 
     return this.prisma.product.update({
       where: { id },
-      data: dto,
-    });
+      data: dto,    });
   }
 
-  /**
-   * Delete product
-   */
   async remove(id: string) {
-    await this.findOne(id); // Check exists
+    await this.findOne(id);
 
     await this.prisma.product.delete({
       where: { id },

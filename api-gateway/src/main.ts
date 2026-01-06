@@ -5,6 +5,9 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
+  // Enable CORS
+  app.enableCors();
+  
   const config = new DocumentBuilder()
     .setTitle('YouShop API Gateway')
     .setDescription('Single entry point for all microservices')
